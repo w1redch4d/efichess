@@ -19,8 +19,8 @@ Cmake, llvm-toolchain, edk2-ovmf, qemu,
 blindly follow these, and dig down the rabbit hole using google to know what these commands does
 
 ```
-git clone https://github.com/mrexodia/zig-cross ~/zig-cross
-cmake -G Ninja -B build -DCMAKE_TOOLCHAIN_FILE=~/zig-cross
+git clone --recusive https://github.com/w1redch4d/efichess && cd efichess
+cmake -G Ninja -B build -DCMAKE_TOOLCHAIN_FILE=./zig-cross/cmake/zig-toolchain-uefi64.cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 cmake --build build
 ```
 
