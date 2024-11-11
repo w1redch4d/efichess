@@ -1,6 +1,6 @@
 # EFI CHESS
 
-Fork of https://github.com/w1redch4d/efichess, using [zig-cross](https://github.com/mrexodia/zig-cross).
+WIP, using [zig-cross](https://github.com/mrexodia/zig-cross).
 
 ## References 
 
