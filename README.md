@@ -5,7 +5,7 @@ STILL A WIP
 ## References 
 
 [UEFI 2.6](https://uefi.org/sites/default/files/resources/UEFI%20Spec%202_6.pdf)
-
+[uefi-bare-bones](https://github.com/no92/uefi-bare-bones/blob/master/src/main.c)
 ## Building
 
 ### Pre-requisits
