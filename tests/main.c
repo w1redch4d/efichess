@@ -5,7 +5,7 @@
 /* I'm too lazy to type this out five times */
 #define ERR(x) if(EFI_ERROR((x))) return (x)
 
-EFI_STATUS efi_main(EFI_HANDLE handle __attribute__((unused)), EFI_SYSTEM_TABLE *st) {
+EFI_STATUS EfiMain(EFI_HANDLE handle __attribute__((unused)), EFI_SYSTEM_TABLE *st) {
 	EFI_STATUS status;
 	EFI_INPUT_KEY key;
 

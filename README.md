@@ -1,26 +1,35 @@
 # EFI CHESS
 
-STILL A WIP
+Fork of https://github.com/w1redch4d/efichess, using [zig-cross](https://github.com/mrexodia/zig-cross).
 
 ## References 
 
-[UEFI 2.6](https://uefi.org/sites/default/files/resources/UEFI%20Spec%202_6.pdf)
-[uefi-bare-bones](https://github.com/no92/uefi-bare-bones/blob/master/src/main.c)
+- [UEFI 2.6](https://uefi.org/sites/default/files/resources/UEFI%20Spec%202_6.pdf)
+- [uefi-bare-bones](https://github.com/no92/uefi-bare-bones/blob/master/src/main.c)
+
 ## Building
 
-### Pre-requisits
-Cmake, llvm-toolchain, edk2-ovmf, qemu
-[Get OVMF.fd](https://github.com/tianocore/tianocore.github.io/wiki/How-to-build-OVMF)
+### Prerequisite
+
+Cmake, llvm-toolchain, edk2-ovmf, qemu,
+[OVMF.fd](https://github.com/tianocore/tianocore.github.io/wiki/How-to-build-OVMF), zig-cross
 
 ### Commands
 
 blindly follow these, and dig down the rabbit hole using google to know what these commands does
 
 ```
-mkdir -p build/esp/EFI/BOOT
+git clone https://github.com/mrexodia/zig-cross ~/zig-cross
+cmake -G Ninja -B build -DCMAKE_TOOLCHAIN_FILE=~/zig-cross
+cmake --build build
+```
+
+Then run the file in an emulator:
+
+```
 cd build
-cmake ..
-cp BOOTx64.EFI ./esp/EFI/BOOT
+mkdir -p esp/EFI/BOOT
+cp chess.efi esp/EFI/BOOT/BOOTx64.EFI
 cp /path/to/OVMF.fd .
 qemu-system-x86_64 -drive if=pflash,format=raw,file=OVMF.fd -M accel=kvm:tcg -net none -serial stdio -drive format=raw,file=fat:rw:esp
 ```
