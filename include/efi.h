@@ -59,6 +59,22 @@ BOOLEAN print_number(UINTN number, UINT8 base, BOOLEAN is_signed, UINTN min_digi
     return true;
 }
 
+// EFI_INPUT_KEY get_key(EFI_SYSTEM_TABLE *st) {
+//     EFI_EVENT events[1];
+//     EFI_INPUT_KEY key;
+
+//     key.ScanCode = 0;
+//     key.UnicodeChar = u'\0';
+
+//     events[0] = st->ConIn->WaitForKey;
+//     UINTN index = 0;
+//     st->BootServices->WaitForEvent(1, events, &index);
+
+//     if (index == 0) st->ConIn->ReadKeyStroke(st->ConIn, &key);
+
+//     return key;
+// }
+
 // ===================================================================
 // Print formatted strings to stdout, using a va_list for arguments
 // ===================================================================
@@ -212,4 +228,128 @@ bool uwuprintf(EFI_SYSTEM_TABLE* systable ,CHAR16 *fmt, ...) {
     result = uwuvfprintf(systable->ConOut, fmt, args, systable);
     va_end(args);
     return result;
+}
+
+EFI_INPUT_KEY get_key(EFI_SYSTEM_TABLE *st) {
+    EFI_EVENT events[1];
+    EFI_INPUT_KEY key;
+
+    key.ScanCode = 0;
+    key.UnicodeChar = u'\0';
+
+    events[0] = st->ConIn->WaitForKey;
+    UINTN index = 0;
+    st->BootServices->WaitForEvent(1, events, &index);
+
+    if (index == 0) st->ConIn->ReadKeyStroke(st->ConIn, &key);
+
+    return key;
+}
+
+
+// void *
+// memchr(const void* s, CHAR16* c, size_t n)
+// {
+//     if (n != 0) {
+//         const unsigned char *p = s;
+
+//         do {
+//             if (*p++ == c)
+//                 return ((void *)(p - 1));
+//         } while (--n != 0);
+//     }
+//     return (NULL);
+// }
+
+// char *
+// fgets(EFI_SYSTEM_TABLE *st, CHAR16 *buffer, INT32 inp_size)
+// {
+// 	size_t len;
+// 	char *s;
+// 	unsigned char *p, *t;
+// 	if (inp_size <= 0)		/* sanity check */
+// 		return (NULL);
+// 	s = buffer;
+// 	inp_size--;			/* leave space for NUL */
+// 	while (inp_size != 0) {
+// 		/*
+// 		 * If the buffer is empty, refill it.
+// 		 */
+// 		EFI_INPUT_KEY key = get_key(st);
+// 		/*
+// 		 * Scan through at most n bytes of the current buffer,
+// 		 * looking for '\n'.  If found, copy up to and including
+// 		 * newline, and stop.  Otherwise, copy entire chunk
+// 		 * and loop.
+// 		 */
+// 		if ((int)len > inp_size)
+// 			len = inp_size;
+// 		t = memchr((void *)key.UnicodeChar, '\r', len);
+// 		if (t != NULL) {
+// 			len = ++t - p;
+// 			fp->_r -= len;
+// 			fp->_p = t;
+// 			(void)memcpy((void *)s, (void *)p, len);
+// 			s[len] = '\0';
+// 			return (buf);
+// 		}
+// 		fp->_r -= len;
+// 		fp->_p += len;
+// 		(void)memcpy((void *)s, (void *)p, len);
+// 		s += len;
+// 		n -= len;
+// 	}
+// 	*s = '\0';
+// 	FUNLOCKFILE(fp);
+// 	return (buf);
+// }
+
+CHAR16* get_input_string(EFI_SYSTEM_TABLE *st, CHAR16 *buffer, INT32 inp_size) {
+    EFI_INPUT_KEY key = {0};
+    UINTN index = 0;
+
+    // Initial null-termination of the buffer
+    buffer[0] = 0;
+
+    // Ensure a valid buffer size is provided
+    if (inp_size <= 0) {
+        return NULL;
+    }
+
+    // Leave space for the null terminator
+    inp_size--;
+
+    // Wait for input from the user until we encounter a newline or full buffer
+    while (index < inp_size + 1) {
+        key = get_key(st);  // Get the next key from the keyboard
+
+        // Handle printable characters (space through tilde ~)
+        if (key.UnicodeChar >= u' ' && key.UnicodeChar <= u'~') {
+            buffer[index] = key.UnicodeChar;  // Store the character in the buffer
+            index++;
+            buffer[index] = 0;  // Null-terminate after each character
+            uwuprintf(st, u"%c", key.UnicodeChar);  // Echo the character (optional)
+        }
+
+        // Handle backspace (erase last character)
+        else if (key.UnicodeChar == u'\x08' || key.UnicodeChar == u'\b') {
+            if (index > 0) {
+                index--;  // Move the index back one position
+                buffer[index] = 0;  // Null-terminate the string again
+                uwuprintf(st, u"\b \b");  // Move cursor back, print space, move back again (erase the character)
+            }
+        }
+
+        // Handle Enter key (end input)
+        else if (key.UnicodeChar == u'\r') {
+            buffer[index] = u'\0';  // Null-terminate after Enter key
+            uwuprintf(st, u"\r\n");
+            return buffer;  // Return the input string
+        }
+    }
+
+    // If the buffer is full, null-terminate and return
+    buffer[index] = 0;
+
+    return buffer;
 }

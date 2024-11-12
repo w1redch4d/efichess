@@ -29,7 +29,7 @@ project(efichess)
 # Target: chess
 set(chess_SOURCES
 	cmake.toml
-	"tests/main.c"
+	"src/main.c"
 )
 
 add_executable(chess)

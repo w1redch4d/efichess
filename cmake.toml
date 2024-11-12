@@ -4,6 +4,6 @@ name = "efichess"
 
 [target.chess]
 type = "executable"
-sources = ["tests/main.c"]
+sources = ["src/*.c"]
 include-directories = ["include"]
 clang.compile-options = ['-mno-stack-arg-probe'] # need to see workaround

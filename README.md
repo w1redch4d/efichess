@@ -1,18 +1,18 @@
 # EFI CHESS
 
-WIP, using [zig-cross](https://github.com/mrexodia/zig-cross).
+![](./res/ezgif-2-bdd3d45fef.gif)
 
 ## References 
 
 - [UEFI 2.6](https://uefi.org/sites/default/files/resources/UEFI%20Spec%202_6.pdf)
-- [uefi-bare-bones](https://github.com/no92/uefi-bare-bones/blob/master/src/main.c)
+- [Queso Fuego (UEFI DEV)](https://youtu.be/t3iwBQg_Gik?list=PLT7NbkyNWaqZYHNLtOZ1MNxOt8myP5K0p)
+- [Bare Minimum Chess in C](https://youtu.be/927rfAPHX6E)
 
 ## Building
 
 ### Prerequisite
 
-Cmake, llvm-toolchain, edk2-ovmf, qemu,
-[OVMF.fd](https://github.com/tianocore/tianocore.github.io/wiki/How-to-build-OVMF), zig-cross
+CMake, llvm-toolchain, [edk2-ovmf](https://github.com/tianocore/tianocore.github.io/wiki/How-to-build-OVMF), qemu, [zig-cross](https://github.com/mrexodia/zig-cross)
 
 ### Commands
 
