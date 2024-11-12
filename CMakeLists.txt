@@ -37,6 +37,12 @@ add_executable(chess)
 target_sources(chess PRIVATE ${chess_SOURCES})
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${chess_SOURCES})
 
+if((CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND NOT CMAKE_CXX_COMPILER_FRONTEND_VARIANT MATCHES "^MSVC$") OR (CMAKE_C_COMPILER_ID MATCHES "Clang" AND NOT CMAKE_C_COMPILER_FRONTEND_VARIANT MATCHES "^MSVC$")) # clang
+	target_compile_options(chess PRIVATE
+		-mno-stack-arg-probe
+	)
+endif()
+
 target_include_directories(chess PRIVATE
 	include
 )

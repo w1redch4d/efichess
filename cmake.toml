@@ -6,3 +6,4 @@ name = "efichess"
 type = "executable"
 sources = ["tests/main.c"]
 include-directories = ["include"]
+clang.compile-options = ['-mno-stack-arg-probe'] # need to see workaround

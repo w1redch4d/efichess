@@ -6,12 +6,12 @@
 /* typedefs */
 typedef uint64_t UINT64;
 typedef uint32_t UINT32;
-typedef int CHAR16, UINT16;
+typedef uint16_t CHAR16, UINT16;
 typedef uint8_t UINT8;
 typedef bool BOOLEAN;
 typedef uint32_t INT32;
 typedef int16_t INT16;
-typedef size_t UINTN;
+typedef size_t UINTN, INTN;
 
 //*******************************************************
 //EFI_HANDLE
